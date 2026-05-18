@@ -214,6 +214,39 @@ public class BlogDAO {
         return 0;
     }
 
+    // 管理后台：分页查询所有博文（不限状态）
+    public PageBean findAllWithPage(int curPage, int pageSize) {
+        String countSql = "SELECT COUNT(*) FROM blogs";
+        int totalRows = 0;
+        try (Connection conn = DBUtil.getConnection();
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(countSql)) {
+            if (rs.next()) totalRows = rs.getInt(1);
+        } catch (SQLException e) { e.printStackTrace(); }
+
+        String sql = "SELECT b.*, p.nickname, p.avatar_url FROM blogs b JOIN user_profiles p ON b.user_id = p.user_id ORDER BY b.created_at DESC LIMIT ?, ?";
+        List<Blog> list = new ArrayList<>();
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, (curPage - 1) * pageSize);
+            ps.setInt(2, pageSize);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) list.add(mapBlog(rs));
+        } catch (SQLException e) { e.printStackTrace(); }
+        return new PageBean(curPage, pageSize, totalRows, list);
+    }
+
+    // 统计今日发布的博文数
+    public int countTodayPublished() {
+        String sql = "SELECT COUNT(*) FROM blogs WHERE status = 'published' AND DATE(created_at) = CURDATE()";
+        try (Connection conn = DBUtil.getConnection();
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) { e.printStackTrace(); }
+        return 0;
+    }
+
     private List<Blog> queryList(String sql, int page, int size) {
         List<Blog> list = new ArrayList<>();
         try (Connection conn = DBUtil.getConnection();

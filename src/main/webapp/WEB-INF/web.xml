@@ -36,6 +36,7 @@
     <filter-mapping>
         <filter-name>AdminFilter</filter-name>
         <url-pattern>/api/admin/*</url-pattern>
+        <url-pattern>/admin/*</url-pattern>
     </filter-mapping>
 
     <filter>
@@ -435,6 +436,95 @@
     <servlet-mapping>
         <servlet-name>AdminAiServlet</servlet-name>
         <url-pattern>/api/admin/ai</url-pattern>
+    </servlet-mapping>
+
+    <!-- ==================== JSP Servlet 映射（Wave 4） ==================== -->
+    <servlet>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.admin.AdminDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <url-pattern>/admin/dashboard</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>BlogListJspServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.blog.BlogListJspServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BlogListJspServlet</servlet-name>
+        <url-pattern>/blog/list</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminBlogJspServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.admin.AdminBlogJspServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminBlogJspServlet</servlet-name>
+        <url-pattern>/admin/blogs</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminUserJspServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.admin.AdminUserJspServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminUserJspServlet</servlet-name>
+        <url-pattern>/admin/users</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KnowledgeServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.demo.KnowledgeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KnowledgeServlet</servlet-name>
+        <url-pattern>/knowledge</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>KnowledgeServlet</servlet-name>
+        <url-pattern>/knowledge/el-jstl</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>KnowledgeServlet</servlet-name>
+        <url-pattern>/knowledge/session-cookie</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>KnowledgeServlet</servlet-name>
+        <url-pattern>/knowledge/mvc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>KnowledgeServlet</servlet-name>
+        <url-pattern>/knowledge/scope</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>KnowledgeServlet</servlet-name>
+        <url-pattern>/knowledge/javabean</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>FileUploadDemoServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.demo.FileUploadDemoServlet</servlet-class>
+        <multipart-config>
+            <location>C:\Users\liunx\AppData\Local\Temp</location>
+            <max-file-size>5242880</max-file-size>
+            <max-request-size>10485760</max-request-size>
+        </multipart-config>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FileUploadDemoServlet</servlet-name>
+        <url-pattern>/knowledge/fileupload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JavaMailDemoServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.demo.JavaMailDemoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JavaMailDemoServlet</servlet-name>
+        <url-pattern>/knowledge/javamail</url-pattern>
     </servlet-mapping>
 
     <!-- Welcome file -->

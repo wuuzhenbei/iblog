@@ -241,6 +241,19 @@ public class UserDAO {
         return new PageBean(curPage, pageSize, totalRows, list);
     }
 
+    // 获取最近注册的N个用户
+    public List<User> findRecentUsers(int limit) {
+        String sql = "SELECT * FROM users WHERE status != 'deleted' ORDER BY created_at DESC LIMIT ?";
+        List<User> list = new ArrayList<>();
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, limit);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) list.add(mapUser(rs));
+        } catch (SQLException e) { e.printStackTrace(); }
+        return list;
+    }
+
     private User mapUser(ResultSet rs) throws SQLException {
         User u = new User();
         u.setId(rs.getInt("id"));
