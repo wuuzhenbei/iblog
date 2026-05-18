@@ -12,7 +12,7 @@
         <!-- 知识点卡片 -->
         <div class="card" style="cursor:pointer;" onclick="location.href='${pageContext.request.contextPath}/knowledge/el-jstl'">
             <h3>#1 JSP & #6 EL & #7 JSTL</h3>
-            <p>JSP 页面、EL 表达式（${}）、JSTL 标签（c:forEach / c:if / fmt:formatDate）</p>
+            <p>JSP 页面、EL 表达式（$\\{\\}）、JSTL 标签（c:forEach / c:if / fmt:formatDate）</p>
             <span style="color:#1890ff;">查看演示 →</span>
         </div>
 

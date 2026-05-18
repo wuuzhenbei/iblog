@@ -42,7 +42,7 @@ public class MailUtil {
     }
 
     // 同步发送邮件
-    public static void sendMail(String to, String subject, String content) throws MessagingException {
+    public static void sendMail(String to, String subject, String content) throws MessagingException, java.io.UnsupportedEncodingException {
         Properties props = new Properties();
         props.put("mail.smtp.host", SMTP_HOST);
         props.put("mail.smtp.port", String.valueOf(SMTP_PORT));

@@ -6,13 +6,11 @@ import com.iblog.util.PageBean;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/admin/dashboard")
 public class AdminDashboardServlet extends HttpServlet {
 
     private UserDAO userDAO = new UserDAO();

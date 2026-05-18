@@ -10,9 +10,9 @@ public class DBUtil {
 
     static {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/iblog_db?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8mb4");
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/iblog_db?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8&allowPublicKeyRetrieval=true");
         config.setUsername("root");
-        config.setPassword("root");
+        config.setPassword("123456");
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
         config.setMaximumPoolSize(20);
         config.setMinimumIdle(5);

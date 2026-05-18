@@ -196,7 +196,7 @@ CREATE TABLE `reports` (
 
 -- 默认管理员账号 (密码: admin123)
 INSERT INTO `users` (`username`, `phone`, `password_hash`, `role`, `status`)
-VALUES ('admin', '13800000000', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'super_admin', 'active');
+VALUES ('admin', '13800000000', '$2a$10$D9cTsyjFaVBQ8gdCsQJwO.1/7Vtx5BeCMPs2bnD4ir.O6BMhw5uLq', 'super_admin', 'active');
 
 INSERT INTO `user_profiles` (`user_id`, `nickname`, `level`)
 VALUES (1, '系统管理员', 99);

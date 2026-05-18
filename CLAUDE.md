@@ -1,4 +1,4 @@
-# AGENTS.md — iBlog
+# CLAUDE.md — iBlog
 
 ## Project overview
 
