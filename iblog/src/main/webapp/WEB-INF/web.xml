@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <display-name>iBlog</display-name>
+
+    <!-- ==================== Filters ==================== -->
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>com.iblog.filter.EncodingFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>com.iblog.filter.AuthFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>com.iblog.filter.AdminFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/api/user/*</url-pattern>
+        <url-pattern>/api/blogs</url-pattern>
+        <url-pattern>/api/social/*</url-pattern>
+        <url-pattern>/api/messages/*</url-pattern>
+        <url-pattern>/api/ai/*</url-pattern>
+        <url-pattern>/api/sign</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/api/admin/*</url-pattern>
+    </filter-mapping>
+
+    <!-- ==================== Auth Servlets ==================== -->
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.auth.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/api/auth/register</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.auth.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/api/auth/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.auth.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/api/auth/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CaptchaServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.auth.CaptchaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CaptchaServlet</servlet-name>
+        <url-pattern>/api/auth/captcha</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PasswordResetServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.auth.PasswordResetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PasswordResetServlet</servlet-name>
+        <url-pattern>/api/auth/reset-password</url-pattern>
+    </servlet-mapping>
+
+    <!-- ==================== User Servlets ==================== -->
+    <servlet>
+        <servlet-name>UserProfileServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.user.UserProfileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserProfileServlet</servlet-name>
+        <url-pattern>/api/user/profile</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserPrivacyServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.user.UserPrivacyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserPrivacyServlet</servlet-name>
+        <url-pattern>/api/user/privacy</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserStatusServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.user.UserStatusServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserStatusServlet</servlet-name>
+        <url-pattern>/api/user/status</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserLevelServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.user.UserLevelServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserLevelServlet</servlet-name>
+        <url-pattern>/api/user/level</url-pattern>
+    </servlet-mapping>
+
+    <!-- ==================== Blog Servlets ==================== -->
+    <servlet>
+        <servlet-name>BlogPublishServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.blog.BlogPublishServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BlogPublishServlet</servlet-name>
+        <url-pattern>/api/blogs</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>BlogListServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.blog.BlogListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BlogListServlet</servlet-name>
+        <url-pattern>/api/blogs/list</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>BlogDetailServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.blog.BlogDetailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BlogDetailServlet</servlet-name>
+        <url-pattern>/api/blogs/detail</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>BlogEditServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.blog.BlogEditServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BlogEditServlet</servlet-name>
+        <url-pattern>/api/blogs/edit</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>BlogInteractionServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.blog.BlogInteractionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BlogInteractionServlet</servlet-name>
+        <url-pattern>/api/blogs/interact</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DraftServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.blog.DraftServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DraftServlet</servlet-name>
+        <url-pattern>/api/blogs/drafts</url-pattern>
+    </servlet-mapping>
+
+    <!-- ==================== Comment Servlets ==================== -->
+    <servlet>
+        <servlet-name>CommentServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.blog.CommentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CommentServlet</servlet-name>
+        <url-pattern>/api/comments</url-pattern>
+    </servlet-mapping>
+
+    <!-- ==================== Social Servlets ==================== -->
+    <servlet>
+        <servlet-name>FollowServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.social.FollowServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FollowServlet</servlet-name>
+        <url-pattern>/api/social/follow</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>FriendListServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.social.FriendListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FriendListServlet</servlet-name>
+        <url-pattern>/api/social/list</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>VisitServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.social.VisitServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VisitServlet</servlet-name>
+        <url-pattern>/api/social/visitors</url-pattern>
+    </servlet-mapping>
+
+    <!-- ==================== Circle Servlets ==================== -->
+    <servlet>
+        <servlet-name>CircleListServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.circle.CircleListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CircleListServlet</servlet-name>
+        <url-pattern>/api/circles</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CircleManageServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.circle.CircleManageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CircleManageServlet</servlet-name>
+        <url-pattern>/api/circles/manage</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CirclePostServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.circle.CirclePostServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CirclePostServlet</servlet-name>
+        <url-pattern>/api/circles/posts</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CircleMemberServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.circle.CircleMemberServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CircleMemberServlet</servlet-name>
+        <url-pattern>/api/circles/members</url-pattern>
+    </servlet-mapping>
+
+    <!-- ==================== Chat Servlets ==================== -->
+    <servlet>
+        <servlet-name>MessageServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.chat.MessageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MessageServlet</servlet-name>
+        <url-pattern>/api/messages</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ConversationServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.chat.ConversationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ConversationServlet</servlet-name>
+        <url-pattern>/api/messages/conversations</url-pattern>
+    </servlet-mapping>
+
+    <!-- ==================== AI Servlets ==================== -->
+    <servlet>
+        <servlet-name>AiCopywritingServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.ai.AiCopywritingServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AiCopywritingServlet</servlet-name>
+        <url-pattern>/api/ai/copywriting</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AiPolishServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.ai.AiPolishServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AiPolishServlet</servlet-name>
+        <url-pattern>/api/ai/polish</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AiCommentServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.ai.AiCommentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AiCommentServlet</servlet-name>
+        <url-pattern>/api/ai/comment</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AiEmotionServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.ai.AiEmotionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AiEmotionServlet</servlet-name>
+        <url-pattern>/api/ai/emotion</url-pattern>
+    </servlet-mapping>
+
+    <!-- ==================== Search & Hot Servlets ==================== -->
+    <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.search.SearchServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/api/search</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>HotTrendServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.hot.HotTrendServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HotTrendServlet</servlet-name>
+        <url-pattern>/api/hot/trends</url-pattern>
+    </servlet-mapping>
+
+    <!-- ==================== Activity Servlets ==================== -->
+    <servlet>
+        <servlet-name>SignInServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.activity.SignInServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignInServlet</servlet-name>
+        <url-pattern>/api/sign</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>FeedbackServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.activity.FeedbackServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FeedbackServlet</servlet-name>
+        <url-pattern>/api/feedback</url-pattern>
+    </servlet-mapping>
+
+    <!-- ==================== Admin Servlets ==================== -->
+    <servlet>
+        <servlet-name>AdminUserServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.admin.AdminUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminUserServlet</servlet-name>
+        <url-pattern>/api/admin/users</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminContentServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.admin.AdminContentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminContentServlet</servlet-name>
+        <url-pattern>/api/admin/content</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminCircleServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.admin.AdminCircleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminCircleServlet</servlet-name>
+        <url-pattern>/api/admin/circles</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminHotServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.admin.AdminHotServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminHotServlet</servlet-name>
+        <url-pattern>/api/admin/hot</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminStatsServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.admin.AdminStatsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminStatsServlet</servlet-name>
+        <url-pattern>/api/admin/stats</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminAiServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.admin.AdminAiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminAiServlet</servlet-name>
+        <url-pattern>/api/admin/ai</url-pattern>
+    </servlet-mapping>
+
+    <!-- Welcome file -->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+</web-app>
