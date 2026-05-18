@@ -38,6 +38,15 @@
         <url-pattern>/api/admin/*</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>LoggingFilter</filter-name>
+        <filter-class>com.iblog.filter.LoggingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoggingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <!-- ==================== Auth Servlets ==================== -->
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
@@ -92,6 +101,20 @@
     <servlet-mapping>
         <servlet-name>UserProfileServlet</servlet-name>
         <url-pattern>/api/user/profile</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AvatarUploadServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.user.AvatarUploadServlet</servlet-class>
+        <multipart-config>
+            <location>C:\Users\liunx\AppData\Local\Temp</location>
+            <max-file-size>5242880</max-file-size>
+            <max-request-size>10485760</max-request-size>
+        </multipart-config>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AvatarUploadServlet</servlet-name>
+        <url-pattern>/api/user/avatar</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -174,6 +197,20 @@
     <servlet-mapping>
         <servlet-name>DraftServlet</servlet-name>
         <url-pattern>/api/blogs/drafts</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>BlogImageUploadServlet</servlet-name>
+        <servlet-class>com.iblog.servlet.blog.BlogImageUploadServlet</servlet-class>
+        <multipart-config>
+            <location>C:\Users\liunx\AppData\Local\Temp</location>
+            <max-file-size>5242880</max-file-size>
+            <max-request-size>10485760</max-request-size>
+        </multipart-config>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BlogImageUploadServlet</servlet-name>
+        <url-pattern>/api/blogs/upload</url-pattern>
     </servlet-mapping>
 
     <!-- ==================== Comment Servlets ==================== -->

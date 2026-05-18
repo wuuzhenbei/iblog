@@ -2,6 +2,7 @@ package com.iblog.dao;
 
 import com.iblog.model.Blog;
 import com.iblog.util.DBUtil;
+import com.iblog.util.PageBean;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -180,6 +181,33 @@ public class BlogDAO {
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) { e.printStackTrace(); }
+        return 0;
+    }
+
+    // ========== 分页查询方法（T05） ==========
+
+    public PageBean findFeedWithPage(int curPage, int pageSize) {
+        int totalRows = countByStatus("published");
+        String sql = "SELECT b.*, p.nickname, p.avatar_url FROM blogs b JOIN user_profiles p ON b.user_id = p.user_id WHERE b.status = 'published' AND b.visibility = 'public' ORDER BY b.is_pinned DESC, b.created_at DESC LIMIT ?, ?";
+        List<Blog> list = new ArrayList<>();
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, (curPage - 1) * pageSize);
+            ps.setInt(2, pageSize);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) list.add(mapBlog(rs));
+        } catch (SQLException e) { e.printStackTrace(); }
+        return new PageBean(curPage, pageSize, totalRows, list);
+    }
+
+    public int countByStatus(String status) {
+        String sql = "SELECT COUNT(*) FROM blogs WHERE status = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, status);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) return rs.getInt(1);
         } catch (SQLException e) { e.printStackTrace(); }

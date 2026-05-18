@@ -11,6 +11,9 @@ public class User {
     private String status;
     private String rememberToken;
     private String lastLoginIp;
+    private String email;
+    private String resetToken;
+    private Timestamp resetTokenExpire;
     private Timestamp createdAt;
 
     // Getters and Setters
@@ -30,6 +33,12 @@ public class User {
     public void setRememberToken(String rememberToken) { this.rememberToken = rememberToken; }
     public String getLastLoginIp() { return lastLoginIp; }
     public void setLastLoginIp(String lastLoginIp) { this.lastLoginIp = lastLoginIp; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getResetToken() { return resetToken; }
+    public void setResetToken(String resetToken) { this.resetToken = resetToken; }
+    public Timestamp getResetTokenExpire() { return resetTokenExpire; }
+    public void setResetTokenExpire(Timestamp resetTokenExpire) { this.resetTokenExpire = resetTokenExpire; }
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 }

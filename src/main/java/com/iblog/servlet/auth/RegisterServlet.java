@@ -4,6 +4,7 @@ import com.iblog.dao.UserDAO;
 import com.iblog.model.User;
 import com.iblog.util.AuthUtil;
 import com.iblog.util.JsonUtil;
+import com.iblog.util.MailUtil;
 import javax.servlet.http.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class RegisterServlet extends HttpServlet {
         String username = params.get("username");
         String phone = params.get("phone");
         String password = params.get("password");
+        String email = params.get("email");
 
         if (username == null || username.trim().isEmpty()) {
             JsonUtil.sendError(resp, 400, "用户名不能为空");
@@ -48,6 +50,16 @@ public class RegisterServlet extends HttpServlet {
             user.setId(userId);
             userDAO.insertProfile(userId, username);
             userDAO.insertPrivacy(userId);
+
+            // 保存邮箱并异步发送确认邮件（可选）
+            if (email != null && !email.trim().isEmpty()) {
+                userDAO.updateEmail(userId, email);
+                user.setEmail(email);
+                String confirmUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
+                        + req.getContextPath() + "/api/auth/confirm?token=" + userId;
+                MailUtil.sendConfirmationMail(email, username, confirmUrl);
+            }
+
             JsonUtil.sendSuccess(resp, "userId", userId);
         } else {
             JsonUtil.sendError(resp, 500, "注册失败");

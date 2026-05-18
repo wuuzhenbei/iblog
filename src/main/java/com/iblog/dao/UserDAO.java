@@ -3,6 +3,7 @@ package com.iblog.dao;
 import com.iblog.model.User;
 import com.iblog.model.UserProfile;
 import com.iblog.util.DBUtil;
+import com.iblog.util.PageBean;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,38 @@ public class UserDAO {
             if (rs.next()) return rs.getInt(1);
         } catch (SQLException e) { e.printStackTrace(); }
         return 0;
+    }
+
+    public void updateEmail(int userId, String email) {
+        String sql = "UPDATE users SET email = ? WHERE id = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setInt(2, userId);
+            ps.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    public void updateResetToken(int userId, String token, java.sql.Timestamp expire) {
+        String sql = "UPDATE users SET reset_token = ?, reset_token_expire = ? WHERE id = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, token);
+            ps.setTimestamp(2, expire);
+            ps.setInt(3, userId);
+            ps.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    public User findByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return mapUser(rs);
+        } catch (SQLException e) { e.printStackTrace(); }
+        return null;
     }
 
     public void updateRememberToken(int userId, String token) {
@@ -200,6 +233,14 @@ public class UserDAO {
         return list;
     }
 
+    // ========== 分页查询方法（T06） ==========
+
+    public PageBean findAllWithPage(int curPage, int pageSize) {
+        int totalRows = countAll();
+        List<User> list = findAll(curPage, pageSize);
+        return new PageBean(curPage, pageSize, totalRows, list);
+    }
+
     private User mapUser(ResultSet rs) throws SQLException {
         User u = new User();
         u.setId(rs.getInt("id"));
@@ -210,6 +251,9 @@ public class UserDAO {
         u.setStatus(rs.getString("status"));
         u.setRememberToken(rs.getString("remember_token"));
         u.setLastLoginIp(rs.getString("last_login_ip"));
+        u.setEmail(rs.getString("email"));
+        u.setResetToken(rs.getString("reset_token"));
+        u.setResetTokenExpire(rs.getTimestamp("reset_token_expire"));
         u.setCreatedAt(rs.getTimestamp("created_at"));
         return u;
     }
