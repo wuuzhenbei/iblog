@@ -200,3 +200,23 @@ VALUES ('admin', '13800000000', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad
 
 INSERT INTO `user_profiles` (`user_id`, `nickname`, `level`)
 VALUES (1, '系统管理员', 99);
+
+-- ============================================================
+-- 扩展：邮件验证 + 密码重置 + 收藏夹
+-- ============================================================
+
+-- users 表新增字段
+ALTER TABLE `users` ADD COLUMN `email` VARCHAR(100) DEFAULT NULL AFTER `phone`;
+ALTER TABLE `users` ADD COLUMN `reset_token` VARCHAR(128) DEFAULT NULL AFTER `remember_token`;
+ALTER TABLE `users` ADD COLUMN `reset_token_expire` DATETIME DEFAULT NULL AFTER `reset_token`;
+
+-- 收藏夹表（Session 购物车概念对应）
+CREATE TABLE `favorites` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `blog_id` INT NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `user_blog` (`user_id`, `blog_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`blog_id`) REFERENCES `blogs`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
