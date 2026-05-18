@@ -2,7 +2,7 @@
 
 > **项目**：iBlog 智能社交博客平台
 > **创建时间**：2026-05-18
-> **当前轮次**：第 1 轮
+> **当前轮次**：第 1 轮（已完成，准备进入第 2 轮）
 
 ---
 
@@ -1149,3 +1149,67 @@ Wave 4 发现 **1 个阻塞问题**，已修复。其余 JSP 页面、DAO 方法
 ### 测试结论
 
 ✅ **全部通过**。29 个文件完整存在，关键代码逻辑正确，14 个知识点全部覆盖。无阻塞问题，可以进入下一轮。
+
+---
+
+## 🔧 第1轮部署修复（2026-05-18）
+
+### 问题清单
+
+| # | 问题 | 根因 | 修复方式 |
+|---|------|------|----------|
+| 1 | Tomcat 启动失败：`@WebServlet` 与 `web.xml` 冲突 | Tomcat 8.5 不允许同一 Servlet 同时有注解和 XML 映射 | 移除 7 个 Servlet 的 `@WebServlet` 注解 |
+| 2 | 500 错误：`Unsupported character encoding 'utf8mb4'` | Java 不认识 `utf8mb4` 编码名 | 改为 `characterEncoding=utf8` |
+| 3 | 500 错误：`Public Key Retrieval is not allowed` | MySQL 8.0 `caching_sha2_password` 需要此参数 | 添加 `allowPublicKeyRetrieval=true` |
+| 4 | 500 错误：`Unknown database 'iblog_db'` | 数据库未初始化 | 运行 `sql/init.sql` |
+| 5 | 401 登录失败 | BCrypt 哈希不匹配 `admin123` | 重新生成正确哈希并更新 init.sql |
+| 6 | JSP 500 错误：`Failed to parse expression [${}]` | 文本中的 `${}` 被当作 EL 表达式 | 转义为 `$\{\}` |
+| 7 | 前端代理 404 | Vite proxy target 缺少 `/iblog` 前缀 | 改为 `http://localhost:8080/iblog` |
+| 8 | Maven 不在 PATH | 系统未安装独立 Maven | 使用 `.m2/wrapper` 全路径 |
+| 9 | 前端只监听 IPv6 | Vite 默认监听 `[::1]` | 添加 `--host 0.0.0.0` |
+
+### 修复的文件
+
+- `src/main/java/com/iblog/util/DBUtil.java` — JDBC URL + 密码
+- `src/main/java/com/iblog/util/MailUtil.java` — throws 声明
+- `src/main/java/com/iblog/servlet/admin/AdminBlogJspServlet.java` — 移除 @WebServlet
+- `src/main/java/com/iblog/servlet/admin/AdminDashboardServlet.java` — 移除 @WebServlet
+- `src/main/java/com/iblog/servlet/admin/AdminUserJspServlet.java` — 移除 @WebServlet
+- `src/main/java/com/iblog/servlet/blog/BlogListJspServlet.java` — 移除 @WebServlet
+- `src/main/java/com/iblog/servlet/demo/KnowledgeServlet.java` — 移除 @WebServlet
+- `src/main/java/com/iblog/servlet/demo/FileUploadDemoServlet.java` — 移除 @WebServlet
+- `src/main/java/com/iblog/servlet/demo/JavaMailDemoServlet.java` — 移除 @WebServlet
+- `src/main/webapp/WEB-INF/jsp/knowledge/index.jsp` — 转义 EL 表达式
+- `iblog-frontend/vite.config.js` — 代理 target
+- `sql/init.sql` — BCrypt 哈希
+- `AGENTS.md` — 更新环境信息和踩坑记录
+- `CLAUDE.md` — 同步更新
+
+### 验证结果
+
+- ✅ 前端 Vue SPA: `http://localhost:5173/` 正常运行
+- ✅ 后端 Tomcat: `http://localhost:8080/iblog/` 正常运行
+- ✅ 知识点导航: `http://localhost:8080/iblog/knowledge` 14 个知识点全部可访问
+- ✅ 博文列表: `http://localhost:8080/iblog/blog/list` JSP 分页正常
+- ✅ 登录功能: admin/admin123 登录成功
+- ✅ EL-JSTL 演示: 所有 EL 表达式和 JSTL 标签正确渲染
+
+### Commit
+
+- `708a46a` — fix: 修复部署问题并更新文档
+
+---
+
+## 📝 经验教训
+
+### 第1轮总结
+
+1. **Tomcat 8.5 不支持 @WebServlet + web.xml 双重映射** — 只用 web.xml 声明式映射
+2. **JDBC characterEncoding 不能用 utf8mb4** — Java 只认识 `utf8` 或 `UTF-8`
+3. **MySQL 8.0 需要 allowPublicKeyRetrieval=true** — 默认 `caching_sha2_password` 认证
+4. **BCrypt 哈希必须与实际密码匹配** — 不要用网上随便找的示例哈希
+5. **JSP 中显示 `${}` 字面量必须转义** — 否则 EL 解析器报错
+6. **Vite 代理 target 必须包含 context path** — 否则 404
+7. **Maven 不在 PATH 时用全路径** — `.m2/wrapper` 中有完整 Maven
+8. **Vite 默认只监听 IPv6** — 加 `--host 0.0.0.0` 才能被 Chrome 访问
+9. **npm install 需要 --include=dev** — vite 是 devDependency
